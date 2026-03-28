@@ -195,7 +195,12 @@ CustomDocument.getInitialProps = async (ctx) => {
         origin: process.env.NEXT_CLIENT_HOST_URL || "http://localhost:3000",
       },
     });
-    if (!res.ok) throw new Error(`Analytics config fetch failed: ${res.status}`);
+    if (!res.ok) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error(`Analytics config fetch failed: ${res.status}`);
+      }
+      throw new Error(`Analytics config fetch failed: ${res.status}`);
+    }
     const text = await res.text();
     const data = JSON.parse(text);
     if (Array.isArray(data)) {
@@ -204,7 +209,9 @@ CustomDocument.getInitialProps = async (ctx) => {
       });
     }
   } catch (err) {
-    console.error("Error fetching analytics config:", err);
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Error fetching analytics config:", err);
+    }
   }
 
   return {

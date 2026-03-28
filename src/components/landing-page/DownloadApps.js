@@ -4,6 +4,10 @@ import DollarSignHighlighter from "../DollarSignHighlighter";
 import AppLinks from "../footer/footer-middle/AppLinks";
 
 const DownloadApps = ({ theme, isSmall, landingPageData }) => {
+  if (!landingPageData) {
+    return null;
+  }
+  
   return (
     <CustomStackFullWidth
       alignItems={isSmall ? "center" : "flex-start"}
