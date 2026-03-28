@@ -9,6 +9,11 @@ const nextConfig = {
     } : false,
   },
   images: {
+    domains: [
+      "www.xenda.online",
+      "xenda.online",
+      "cameroun.xenda.online",
+    ],
     remotePatterns: [
       {
         protocol: 'http',
