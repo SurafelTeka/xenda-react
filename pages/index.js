@@ -38,17 +38,28 @@ const Root = (props) => {
 		lanDirection = JSON.parse(localStorage.getItem("settings"));
 		// languageSetting = JSON.parse(localStorage.getItem("language-setting"));
 	}
+	const effectiveConfig = dataConfig ?? configData;
+	const effectiveLanding =
+		data && Object.keys(data || {}).length ? data : landingPageData;
+
 	// console.log({ lanDirection })
 	return (
 		<>
 			<CssBaseline />
 			{/* <DynamicFavicon configData={configData} /> */}
 			<SEO
-				image={landingPageData?.meta_image || configData?.fav_icon_full_url}
-				businessName={configData?.business_name}
-				configData={configData}
-				title={landingPageData?.meta_title || configData?.business_name}
-				description={landingPageData?.meta_description || configData?.meta_description}
+				image={
+					effectiveLanding?.meta_image || effectiveConfig?.fav_icon_full_url
+				}
+				businessName={effectiveConfig?.business_name}
+				configData={effectiveConfig}
+				title={
+					effectiveLanding?.meta_title || effectiveConfig?.business_name
+				}
+				description={
+					effectiveLanding?.meta_description ||
+					effectiveConfig?.meta_description
+				}
 			/>
 			{data && dataConfig ? (
 				<LandingLayout configData={dataConfig} landingPageData={data}>

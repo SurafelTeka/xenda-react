@@ -7,10 +7,10 @@ import {
 import MainApi from "../../../MainApi";
 const getZoneId = async (location, zoneIdEnabled) => {
   if (location?.lat && location?.lng) {
-    const { data } = await MainApi.get(
+    const res = await MainApi.get(
       `${zoneId_api}?lat=${location?.lat}&lng=${location?.lng}`
     );
-    return data;
+    return res?.data;
   }
 };
 

@@ -6,11 +6,11 @@ import {
 } from "../../../api-error-response/ErrorResponses";
 import MainApi from "../../../MainApi";
 const getGeoCode = async (location) => {
-  if (location) {
-    const { data } = await MainApi.get(
+  if (location?.lat != null && location?.lng != null) {
+    const res = await MainApi.get(
       `${geocode_api}?lat=${location.lat}&lng=${location.lng}`
     );
-    return data;
+    return res?.data;
   }
 };
 
