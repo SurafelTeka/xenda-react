@@ -5,7 +5,11 @@ export const placeApiAutocomplete_api = "/api/v1/config/place-api-autocomplete";
 export const placedetails_api = "/api/v1/config/place-api-details";
 //export const distance_api = "/api/v1/config/distance";
 export const geocode_api = "/api/v1/config/geocode-api";
-export const zoneId_api = "/api/v1/config/get-zone-id";
+/** Override if your backend uses a different route (must include leading slash). */
+export const zoneId_api =
+  (typeof process !== "undefined" &&
+    process.env.NEXT_PUBLIC_ZONE_ID_API_PATH) ||
+  "/api/v1/config/get-zone-id";
 export const moduleList = "/api/v1/module";
 export const banners = "/api/v1/banners";
 export const others_banners = "api/v1/other-banners";
