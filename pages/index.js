@@ -80,7 +80,13 @@ export const getServerSideProps = async (context) => {
 			},
 		}
 	);
-	const config = await configRes.json();
+	const text = await configRes.text();
+	let config;
+	try {
+		config = JSON.parse(text);
+	} catch (e) {
+		config = null;
+	}
 	const landingPageRes = await fetch(
 		`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/react-landing-page`,
 		{
@@ -88,12 +94,17 @@ export const getServerSideProps = async (context) => {
 			headers: {
 				"X-software-id": 33571750,
 				"X-server": "server",
-				"X-localization": language,
 				origin: process.env.NEXT_CLIENT_HOST_URL,
 			},
 		}
 	);
-	const landingPageData = await landingPageRes.json();
+	const landingPageText = await landingPageRes.text();
+	let landingPageData;
+	try {
+		landingPageData = JSON.parse(landingPageText);
+	} catch (e) {
+		landingPageData = null;
+	}
 	// Set cache control headers for 1 hour (3600 seconds)
 	res.setHeader(
 		"Cache-Control",

@@ -195,7 +195,9 @@ CustomDocument.getInitialProps = async (ctx) => {
         origin: process.env.NEXT_CLIENT_HOST_URL || "http://localhost:3000",
       },
     });
-    const data = await res.json();
+    if (!res.ok) throw new Error(`Analytics config fetch failed: ${res.status}`);
+    const text = await res.text();
+    const data = JSON.parse(text);
     if (Array.isArray(data)) {
       data.forEach((item) => {
         if (item.type && item.script_id) analyticsConfig[item.type] = item.script_id;

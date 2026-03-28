@@ -67,7 +67,8 @@ export const getStaticProps = async () => {
       throw new Error(`Failed to fetch config: ${configRes.statusText}`);
     }
 
-    const config = await configRes.json();
+    const text = await configRes.text();
+    const config = JSON.parse(text);
 
     return {
       props: {

@@ -88,7 +88,8 @@ export const getServerSideProps = async (context) => {
       },
     }
   );
-  const config = await configRes.json();
+  const configText = await configRes.text();
+  const config = JSON.parse(configText);
   const productId = context.query.id;
   const moduleId = context.query.module_id;
   const productType = context.query?.product_type;
@@ -105,7 +106,8 @@ export const getServerSideProps = async (context) => {
         },
       }
     );
-    productDetailsData = await productDetails.json();
+    productDetailsText = await productDetails.text();
+    productDetailsData = JSON.parse(productDetailsText);
   }
   const landingPageRes = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/react-landing-page`,
@@ -119,7 +121,8 @@ export const getServerSideProps = async (context) => {
       },
     }
   );
-  const landingPageData = await landingPageRes.json();
+  const landingPageText = await landingPageRes.text();
+  const landingPageData = JSON.parse(landingPageText);
 
   return {
     props: {

@@ -115,8 +115,10 @@ export const getServerSideProps = async (context) => {
       throw new Error("One or more API calls failed.");
     }
 
-    const configData = await configRes.json();
-    const storeDetails = await storeDetailsRes.json();
+    const configText = await configRes.text();
+    const configData = JSON.parse(configText);
+    const storeDetailsText = await storeDetailsRes.text();
+    const storeDetails = JSON.parse(storeDetailsText);
 
     return {
       props: {
