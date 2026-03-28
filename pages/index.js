@@ -50,15 +50,17 @@ const Root = (props) => {
 				title={landingPageData?.meta_title || configData?.business_name}
 				description={landingPageData?.meta_description || configData?.meta_description}
 			/>
-			{data && (
+			{data && dataConfig ? (
 				<LandingLayout configData={dataConfig} landingPageData={data}>
-
 					<LandingPage
 						configData={dataConfig}
 						landingPageData={data}
 					/>
-
 				</LandingLayout>
+			) : (
+				<div style={{ padding: "2rem", textAlign: "center" }}>
+					Loading...
+				</div>
 			)}
 		</>
 	);

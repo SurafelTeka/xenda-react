@@ -40,8 +40,10 @@ const StorePage = ({ configData, storeDetails, distance }) => {
 
     if (!configData || Object.keys(configData).length === 0) {
       Router.replace("/404");
+      return null;
     } else if (configData?.maintenance_mode) {
       Router.replace("/maintainance");
+      return null;
     } else {
       dispatch(setConfigData(configData));
     }

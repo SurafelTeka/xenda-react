@@ -18,6 +18,14 @@ const Index = ({ configData, productDetailsData, landingPageData }) => {
     handleProductDetails();
   }, [productDetailsData, cartList]);
 
+  if (!configData) {
+    return (
+      <div style={{ padding: "2rem", textAlign: "center" }}>
+        Loading...
+      </div>
+    );
+  }
+  
   const handleProductDetails = () => {
     if (productDetailsData) {
       if (cartList?.length > 0) {
