@@ -105,8 +105,8 @@ const HeroLocationForm = () => {
   };
   const handleAgreeLocation = (e) => {
     e.stopPropagation();
-    if (coords) {
-      setLocation({ lat: coords?.latitude, lng: coords?.longitude });
+    if (coords && coords.latitude && coords.longitude) {
+      setLocation({ lat: coords.latitude, lng: coords.longitude });
       setOpenLocation(false);
       setShowCurrentLocation(true);
       setGeoLocationEnable(true);

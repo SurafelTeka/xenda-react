@@ -138,7 +138,9 @@ const AddAddressComponent = ({
     setPlaceDetailsEnabled(true);
   };
   const getCurrentLocation = () => {
-    setLocation({ lat: coords.latitude, lng: coords.longitude });
+    if (coords && coords.latitude && coords.longitude) {
+      setLocation({ lat: coords.latitude, lng: coords.longitude });
+    }
   };
 
   return (
