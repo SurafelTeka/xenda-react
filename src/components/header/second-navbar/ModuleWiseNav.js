@@ -83,11 +83,7 @@ const ModuleWiseNav = (props) => {
 		</CustomStackFullWidth>
 	);
 	const handleIconClick = () => {
-		if (location) {
-			router.push("/home");
-		} else {
-			router.push("/");
-		}
+		router.push("/");
 	};
 	const getIcon = () => (
 		<Box
