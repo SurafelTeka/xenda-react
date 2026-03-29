@@ -105,12 +105,10 @@ const MapModal = ({
 
   useEffect(() => {
     if (places) {
-      const tempData = Array.isArray(places?.suggestions)
-        ? places.suggestions.map((item) => ({
-            place_id: item?.placePrediction?.placeId,
-            description: `${item?.placePrediction?.structuredFormat?.mainText?.text}, ${item?.placePrediction?.structuredFormat?.secondaryText?.text}`,
-          }))
-        : [];
+      const tempData = places?.suggestions?.map((item) => ({
+        place_id: item?.placePrediction?.placeId,
+        description: `${item?.placePrediction?.structuredFormat?.mainText?.text}, ${item?.placePrediction?.structuredFormat?.secondaryText?.text}`,
+      }));
       setPredictions(tempData);
     }
   }, [places]);
@@ -299,20 +297,14 @@ const MapModal = ({
                     fullWidth
                     freeSolo
                     id="combo-box-demo"
-                    getOptionLabel={(option) =>
-                      typeof option === "string"
-                        ? option
-                        : option?.description || ""
-                    }
-                    options={predictions || []}
+                    getOptionLabel={(option) => option.description}
+                    options={predictions}
                     onChange={(event, value) => {
                       if (value) {
                         if (value !== "" && typeof value === "string") {
                           setLoadingAuto(true);
-                          const firstPrediction = predictions?.[0];
-                          if (firstPrediction) {
-                            handleLocationSelection(firstPrediction);
-                          }
+                          const value = predictions[0];
+                          handleLocationSelection(value);
                         } else {
                           handleLocationSelection(value);
                         }
@@ -449,7 +441,7 @@ const MapModal = ({
                       handleClose();
                     }}
                   >
-                    {errorLocation?.response?.data?.errors?.[0]?.message || "Error"}
+                    {errorLocation?.response?.data?.errors[0]?.message}
                   </Button>
                 ) : (
                   <PrimaryButton

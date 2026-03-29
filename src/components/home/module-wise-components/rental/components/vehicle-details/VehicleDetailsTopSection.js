@@ -469,9 +469,7 @@ const ImageSection = ({ vehicleDetails }) => {
             }
           },
           onError: (error) => {
-            if (error?.response?.data?.message) {
-              toast.error(error.response.data.message);
-            }
+            toast.error(error.response.data.message);
           },
         }
       );
@@ -491,9 +489,7 @@ const ImageSection = ({ vehicleDetails }) => {
       {
         onSuccess: onSuccessHandlerForDelete,
         onError: (error) => {
-          if (error?.response?.data?.message) {
-            toast.error(error.response.data.message);
-          }
+          toast.error(error.response.data.message);
         },
       }
     );

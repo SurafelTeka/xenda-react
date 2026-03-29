@@ -193,7 +193,7 @@ const Trip = (props) => {
   return (
     <CustomPaper
       onClick={(e) => {
-        router.push(`rental/trip-status/${order?.id || ''}`);
+        router.push(`rental/trip-status/${order?.id}`);
       }}
     >
       <Stack direction="row" gap={{xs: 1, sm: 2}}>

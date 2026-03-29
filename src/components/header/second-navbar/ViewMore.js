@@ -27,7 +27,7 @@ const ViewMore = ({ redirect, handlePopoverCloseSub, buttonType }) => {
             };
       router.push(query, undefined, { shallow: true });
     } else {
-      router.push(redirect || "/", undefined, { shallow: true });
+      router.push(redirect, undefined, { shallow: true });
     }
   };
 

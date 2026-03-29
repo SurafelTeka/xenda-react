@@ -18,10 +18,6 @@ import HeroLocationForm from "./HeroLocationForm";
 import ModuleSelectionRaw from "./module-selection/ModuleSelectionRaw";
 
 const HeroTitleSection = ({ landingPageData }) => {
-  if (!landingPageData) {
-    return null;
-  }
-  
   const theme = useTheme();
   const isXSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const [currentLocation, setCurrentLocation] = useState(null);

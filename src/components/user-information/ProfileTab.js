@@ -78,8 +78,6 @@ const ProfileTab = ({
             (!modules?.find((item) => item?.module_type === 'rental') && item.id === 3) || (modules?.find((item) => item?.module_type === 'rental')?.status === 0 && item.id === 3)
           ) {
             return null;
-          } else if (!configData) {
-            return null;
           } else {
             return (
               <Box key={index}>

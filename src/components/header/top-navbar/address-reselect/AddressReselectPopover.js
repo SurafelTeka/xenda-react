@@ -32,8 +32,8 @@ const AddressReselectPopover = (props) => {
 
   const handleAgreeLocation = () => {
     // e.stopPropagation();
-    if (coords && coords.latitude && coords.longitude) {
-      setLocation({ lat: coords.latitude, lng: coords.longitude });
+    if (coords) {
+      setLocation({ lat: coords?.latitude, lng: coords?.longitude });
       setShowCurrentLocation(true);
       setGeoLocationEnable(true);
       setZoneIdEnabled(true);

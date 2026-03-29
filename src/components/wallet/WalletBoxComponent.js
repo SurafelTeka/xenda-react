@@ -53,20 +53,15 @@ const WalletBoxComponent = (props) => {
   const [isFocus, setFocus] = useState(false);
   const [loading, setLoading] = useState(false);
   const { configData } = useSelector((state) => state?.configData);
-  
-  if (!configData) {
-    return <div>Loading...</div>;
-  }
-  
   const [value, setValue] = useState(
-    configData?.active_payment_method_list?.[0]?.gateway || ""
+    configData?.active_payment_method_list[0]?.gateway
   );
   const base_url = configData?.base_urls?.gateway_image_url;
 
   const formik = useFormik({
     initialValues: {
       amount: "",
-      payment_method: configData?.active_payment_method_list?.[0]?.gateway || "",
+      payment_method: configData?.active_payment_method_list[0]?.gateway,
     },
     validationSchema: validationSchema,
     onSubmit: async (values, helpers) => {

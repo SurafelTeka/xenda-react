@@ -309,7 +309,7 @@ const Sidebar = (props) => {
                 InputProps={{
                   startAdornment: (
                     <Box component="span" sx={{ mr: 1 }}>
-                      {configData?.currency_symbol || ""}
+                      {configData?.currency_symbol}
                     </Box>
                   ),
                 }}
@@ -342,7 +342,7 @@ const Sidebar = (props) => {
                 InputProps={{
                   startAdornment: (
                     <Box component="span" sx={{ mr: 1 }}>
-                      {configData?.currency_symbol || ""}
+                      {configData?.currency_symbol}
                     </Box>
                   ),
                 }}

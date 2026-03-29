@@ -19,10 +19,6 @@ const DynamicModuleSelection = dynamic(() =>
   import("./module-selection/ModuleSelectionRaw")
 );
 const HeroSection = ({ landingPageDataheroSection }) => {
-  if (!landingPageDataheroSection) {
-    return null;
-  }
-  
   const theme = useTheme();
   const isXSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const [currentLocation, setCurrentLocation] = useState(null);

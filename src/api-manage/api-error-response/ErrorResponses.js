@@ -22,20 +22,6 @@ export const onErrorResponse = (error) => {
   });
 };
 export const onSingleErrorResponse = (error) => {
-  if (process.env.NODE_ENV === "development") {
-    if (!error?.response) {
-      // eslint-disable-next-line no-console
-      console.error("API error (no response)", error);
-    } else if (!error?.response?.data) {
-      // eslint-disable-next-line no-console
-      console.error("API error (no response.data)", {
-        status: error?.response?.status,
-        url: error?.config?.url,
-        method: error?.config?.method,
-        response: error?.response,
-      });
-    }
-  }
   toast.error(error?.response?.data?.message, {
     id: "error",
   });

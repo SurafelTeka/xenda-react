@@ -18,14 +18,6 @@ const Index = ({ configData, productDetailsData, landingPageData }) => {
     handleProductDetails();
   }, [productDetailsData, cartList]);
 
-  if (!configData) {
-    return (
-      <div style={{ padding: "2rem", textAlign: "center" }}>
-        Loading...
-      </div>
-    );
-  }
-  
   const handleProductDetails = () => {
     if (productDetailsData) {
       if (cartList?.length > 0) {
@@ -96,8 +88,7 @@ export const getServerSideProps = async (context) => {
       },
     }
   );
-  const configText = await configRes.text();
-  const config = JSON.parse(configText);
+  const config = await configRes.json();
   const productId = context.query.id;
   const moduleId = context.query.module_id;
   const productType = context.query?.product_type;
@@ -114,8 +105,7 @@ export const getServerSideProps = async (context) => {
         },
       }
     );
-    productDetailsText = await productDetails.text();
-    productDetailsData = JSON.parse(productDetailsText);
+    productDetailsData = await productDetails.json();
   }
   const landingPageRes = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/react-landing-page`,
@@ -129,8 +119,7 @@ export const getServerSideProps = async (context) => {
       },
     }
   );
-  const landingPageText = await landingPageRes.text();
-  const landingPageData = JSON.parse(landingPageText);
+  const landingPageData = await landingPageRes.json();
 
   return {
     props: {

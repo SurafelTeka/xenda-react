@@ -50,9 +50,7 @@ const CustomMapSearch = ({
         <Autocomplete
           fullWidth
           options={predictions || []}
-          getOptionLabel={(option) =>
-            typeof option === "string" ? option : option?.description || ""
-          }
+          getOptionLabel={(option) => option?.description || ""}
           onChange={(event, value) => handleChange(event, value)}
           value={currentLocationValue}
           clearOnBlur={false}

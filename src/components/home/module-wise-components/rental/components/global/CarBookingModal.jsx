@@ -346,7 +346,7 @@ const CarBookingModal = (props) => {
           handleClose();
         },
         onError: (error) => {
-          if (error?.response?.data?.length > 0) {
+          if (error.response.data?.length > 0) {
             setIds?.(error.response.data);
             setUpdateCartObject?.(updateObject);
             setOpenTripChange?.(true);
@@ -367,9 +367,7 @@ const CarBookingModal = (props) => {
           //handleClose()
         },
         onError: (error) => {
-          if (error?.response?.data?.message) {
-            toast.error(error.response.data.message);
-          }
+          toast.error(error.response.data.message);
         }
       })
     }

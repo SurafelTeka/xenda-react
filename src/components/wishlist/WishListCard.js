@@ -212,9 +212,7 @@ const WishListCard = ({ item }) => {
           }
         },
         onError: (error) => {
-          if (error?.response?.data?.message) {
-            toast.error(error.response.data.message);
-          }
+          toast.error(error.response.data.message);
         },
       });
     } else toast.error(t(not_logged_in_message));
@@ -230,11 +228,7 @@ const WishListCard = ({ item }) => {
     mutate(item?.id, {
       onSuccess: onSuccessHandlerForDelete,
       onError: (error) => {
-        if (error?.response?.data?.message) {
-          toast.error(error.response.data.message);
-        } else if (error?.response?.data) {
-          toast.error(error.response.data);
-        }
+        toast.error(error.response.data.message);
       },
     });
   };

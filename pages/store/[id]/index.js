@@ -40,10 +40,8 @@ const StorePage = ({ configData, storeDetails, distance }) => {
 
     if (!configData || Object.keys(configData).length === 0) {
       Router.replace("/404");
-      return null;
     } else if (configData?.maintenance_mode) {
       Router.replace("/maintainance");
-      return null;
     } else {
       dispatch(setConfigData(configData));
     }
@@ -117,10 +115,8 @@ export const getServerSideProps = async (context) => {
       throw new Error("One or more API calls failed.");
     }
 
-    const configText = await configRes.text();
-    const configData = JSON.parse(configText);
-    const storeDetailsText = await storeDetailsRes.text();
-    const storeDetails = JSON.parse(storeDetailsText);
+    const configData = await configRes.json();
+    const storeDetails = await storeDetailsRes.json();
 
     return {
       props: {

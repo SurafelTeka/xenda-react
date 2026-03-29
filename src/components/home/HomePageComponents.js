@@ -77,21 +77,13 @@ const HomePageComponents = ({ configData, landingPageData }) => {
         }
       }
     });
-  const currentLatLng =
-    typeof window !== "undefined"
-      ? (() => {
-          try {
-            return JSON.parse(window.localStorage.getItem("currentLatLng"));
-          } catch {
-            return null;
-          }
-        })()
-      : null;
+  const currentLatLng = JSON.parse(
+    window.localStorage.getItem("currentLatLng")
+  );
   const { data: zoneData } = useQuery(
-    ["zoneId", currentLatLng],
+    ["zoneId", location],
     async () => GoogleApi.getZoneId(currentLatLng),
     {
-      enabled: !!(currentLatLng?.lat && currentLatLng?.lng),
       retry: 1,
     }
   );
@@ -105,7 +97,7 @@ const HomePageComponents = ({ configData, landingPageData }) => {
   } = useGetOfflinePaymentOptions();
   const isZoneDigital = getDigitalMethodFromZone(
     failPayment?.zone_id,
-    zoneData
+    zoneData?.data
   );
   console.log({ failPayment });
   useEffect(() => {
@@ -216,7 +208,7 @@ const HomePageComponents = ({ configData, landingPageData }) => {
   const failedOrderPlace = () => {
     handleFailedOrderPlace({
       paymentMethod,
-      paymentFailedData: failPayment,
+      failPayment,
       handlePayment,
       paymentMethodUpdateMutation,
       walletPaymentMutation,

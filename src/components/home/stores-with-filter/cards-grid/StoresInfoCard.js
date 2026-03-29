@@ -62,16 +62,7 @@ const StoresInfoCard = (props) => {
   const id = data?.id ? data?.id : data?.slug;
   const { configData } = useSelector((state) => state.configData);
   const store_image_url = `${configData?.base_urls?.store_image_url}`;
-  const moduleId =
-    typeof window !== "undefined"
-      ? (() => {
-          try {
-            return JSON.parse(window.localStorage.getItem("module"))?.id;
-          } catch {
-            return undefined;
-          }
-        })()
-      : undefined;
+  const moduleId = JSON.parse(window.localStorage.getItem("module"))?.id;
 
   const [openModal, setOpenModal] = React.useState(false);
   const dispatch = useDispatch();
@@ -96,9 +87,7 @@ const StoresInfoCard = (props) => {
           }
         },
         onError: (error) => {
-          if (error?.response?.data?.message) {
-            toast.error(error.response.data.message);
-          }
+          toast.error(error.response.data.message);
         },
       });
     } else toast.error(t(not_logged_in_message));
@@ -117,11 +106,7 @@ const StoresInfoCard = (props) => {
     mutate(id, {
       onSuccess: onSuccessHandlerForDelete,
       onError: (error) => {
-        if (error?.response?.data?.message) {
-          toast.error(error.response.data.message);
-        } else if (error?.message) {
-          toast.error(error.message);
-        }
+        toast.error(error.response.data.message);
       },
     });
   };
@@ -153,7 +138,8 @@ const StoresInfoCard = (props) => {
       <Link
         href={{
           pathname: "/store/[id]",
-          query: { id: `${id}`, module_id: `${moduleId}`, store_zone_id: `${data?.zone_id}` },
+          query: { id: `${id}`, module_id: `${moduleId}` },
+          store_zone_id: `${data?.zone_id}`,
         }}
       >
         <CardWrapper>
@@ -194,7 +180,7 @@ const StoresInfoCard = (props) => {
             >
               {/*getNumberWithConvertedDecimalPoint(data?.avg_rating, configData?.digit_after_decimal_point)*/}
               <Typography fontWeight="bold">
-                {data?.avg_rating ? data.avg_rating.toFixed(1) : "0.0"}
+                {data?.avg_rating.toFixed(1)}
               </Typography>
               <RatingStar fontSize="16px" color="warning.dark" />
             </Stack>

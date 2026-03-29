@@ -174,9 +174,7 @@ const CarCard = ({
             }
           },
           onError: (error) => {
-            if (error?.response?.data?.message) {
-              toast.error(error.response.data.message);
-            }
+            toast.error(error.response.data.message);
           },
         }
       );
@@ -197,9 +195,7 @@ const CarCard = ({
       {
         onSuccess: onSuccessHandlerForDelete,
         onError: (error) => {
-          if (error?.response?.data?.message) {
-            toast.error(error.response.data.message);
-          }
+          toast.error(error.response.data.message);
         },
       }
     );

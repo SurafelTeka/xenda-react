@@ -45,11 +45,6 @@ const AppDownloadSection = ({ configData, landingPageData }) => {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("md"));
   const { t } = useTranslation();
-  
-  if (!landingPageData) {
-    return null;
-  }
-  
   const goToApp = (s) => {
     window.open(s);
   };

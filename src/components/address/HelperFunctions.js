@@ -59,10 +59,10 @@ export const handleChangeForSearch = (event, dispatch) => {
 };
 
 export const handleAgreeLocation = (coords, dispatch) => {
-  if (coords && coords.latitude && coords.longitude) {
+  if (coords) {
     dispatch({
       type: ACTIONS.setLocation,
-      payload: { lat: coords.latitude, lng: coords.longitude },
+      payload: { lat: coords?.latitude, lng: coords?.longitude },
     });
     dispatch({
       type: ACTIONS.setOpenLocation,

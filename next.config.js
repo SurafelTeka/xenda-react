@@ -9,13 +9,6 @@ const nextConfig = {
     } : false,
   },
   images: {
-    domains: [
-      "www.xenda.online",
-      "xenda.online",
-      "cameroun.xenda.online",
-      "maps.googleapis.com",
-      "maps.gstatic.com",
-    ],
     remotePatterns: [
       {
         protocol: 'http',

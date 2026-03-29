@@ -11,10 +11,6 @@ import CustomContainer from "../container";
 import NextImage from "components/NextImage";
 
 const Banners = ({ landingPageData, isSmall }) => {
-  if (!landingPageData) {
-    return null;
-  }
-  
   const infiniteManage = () => {
     if (isSmall) {
       if (landingPageData?.promotion_banners?.length === 1) {

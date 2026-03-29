@@ -137,11 +137,7 @@ const PushNotificationLayout = ({
         setNotification(payload.data);
         // toast.success(payload.data.title)
       })
-      .catch((err) =>
-        toast.error(
-          err?.message ?? (typeof err === "string" ? err : "Notification error")
-        )
-      );
+      .catch((err) => toast(err));
     if (notification) {
       if (pathName === "chat" && notification.type === "message") {
         refetch();

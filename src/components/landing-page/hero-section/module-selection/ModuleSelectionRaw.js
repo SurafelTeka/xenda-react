@@ -167,7 +167,6 @@ const ModuleSelectionRaw = (props) => {
   const { modules } = useSelector((state) => state.configData);
   const [isSelected, setIsSelected] = useState(getCurrentModuleType());
   const { data, refetch } = useGetModule();
-  
   useEffect(() => {
     refetch();
   }, []);
@@ -188,21 +187,19 @@ const ModuleSelectionRaw = (props) => {
 
   return (
     <>
-      {!modules || modules.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '20px' }}>Loading modules...</div>
-      ) : (
-        <CustomStackFullWidth
-          justifyContent={{
-            xs: "flex-start", // Left align on mobile for 2-column layout
-            sm: "center" // Center on larger screens
-          }}
-          flexDirection="row"
-          alignItems="center"
-          flexWrap="wrap"
-          gap="15px"
-          mt="10px"
-        >
-          {modules.map((item, index) => {
+      <CustomStackFullWidth
+        justifyContent={{
+          xs: "flex-start", // Left align on mobile for 2-column layout
+          sm: "center" // Center on larger screens
+        }}
+        flexDirection="row"
+        alignItems="center"
+        flexWrap="wrap"
+        gap="15px"
+        mt="10px"
+      >
+        {modules?.length > 0 &&
+          modules.map((item, index) => {
             return (
               <Card
                 key={index}
@@ -212,8 +209,7 @@ const ModuleSelectionRaw = (props) => {
               />
             );
           })}
-        </CustomStackFullWidth>
-      )}
+      </CustomStackFullWidth>
     </>
   );
 };

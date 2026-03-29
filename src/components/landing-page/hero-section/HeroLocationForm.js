@@ -29,7 +29,6 @@ import { useDispatch } from "react-redux";
 import { module_select_success } from "utils/toasterMessages";
 import { setWishList } from "redux/slices/wishList";
 import { useWishListGet } from "api-manage/hooks/react-query/wish-list/useWishListGet";
-import { useGetWishList } from "api-manage/hooks/react-query/rental-wishlist/useGetWishlist";
 import { getToken } from "helper-functions/getToken";
 import { Box } from "@mui/system";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
@@ -80,25 +79,6 @@ const HeroLocationForm = () => {
       isGeolocationEnabled: true,
     });
 
-  // Auto-fetch location on component mount
-  useEffect(() => {
-    if (isGeolocationAvailable && isGeolocationEnabled && !coords) {
-      getPosition();
-    }
-  }, [isGeolocationAvailable, isGeolocationEnabled, coords, getPosition]);
-
-  // Auto-set location when coords become available
-  useEffect(() => {
-    if (coords && coords.latitude && coords.longitude && !location) {
-      setLocation({ lat: coords.latitude, lng: coords.longitude });
-      setShowCurrentLocation(true);
-      setGeoLocationEnable(true);
-      setZoneIdEnabled(true);
-      setIsSelectedByGps(true);
-      setOpenLocation(false);
-    }
-  }, [coords, location]);
-
   const handleCloseLocation = () => {
     setOpenLocation(false);
     setShowCurrentLocation(false);
@@ -125,8 +105,8 @@ const HeroLocationForm = () => {
   };
   const handleAgreeLocation = (e) => {
     e.stopPropagation();
-    if (coords && coords.latitude && coords.longitude) {
-      setLocation({ lat: coords.latitude, lng: coords.longitude });
+    if (coords) {
+      setLocation({ lat: coords?.latitude, lng: coords?.longitude });
       setOpenLocation(false);
       setShowCurrentLocation(true);
       setGeoLocationEnable(true);
@@ -163,20 +143,13 @@ const HeroLocationForm = () => {
   );
 
   useEffect(() => {
-    if (!places?.suggestions?.length) {
-      return;
+    if (places) {
+      const tempData = places?.suggestions?.map((item) => ({
+        place_id: item.placePrediction.placeId,
+        description: `${item?.placePrediction?.structuredFormat?.mainText.text}, ${item?.placePrediction?.structuredFormat?.secondaryText?.text}`,
+      }));
+      setPredictions(tempData);
     }
-    const tempData = places.suggestions
-      .map((item) => {
-        const pred = item?.placePrediction;
-        if (!pred?.placeId) return null;
-        return {
-          place_id: pred.placeId,
-          description: `${pred?.structuredFormat?.mainText?.text ?? ""}, ${pred?.structuredFormat?.secondaryText?.text ?? ""}`,
-        };
-      })
-      .filter(Boolean);
-    setPredictions(tempData);
   }, [places]);
 
   const {
@@ -233,7 +206,6 @@ const HeroLocationForm = () => {
     dispatch(setWishList(response));
   };
   const { refetch: wishlistRefetch } = useWishListGet(onSuccessHandler);
-  const { refetch: rentalWishlistRefetch } = useGetWishList(onSuccessHandler);
   const setLocationEnable = async () => {
     setGeoLocationEnable(true);
     setZoneIdEnabled(true);
@@ -426,7 +398,7 @@ const HeroLocationForm = () => {
       </CustomStackFullWidth>
       {zoneData && openModuleSelection && (
         <ModuleSelection
-          location={typeof currentLocation === 'string' ? currentLocation : ''}
+          location={currentLocation}
           closeModal={handleCloseModuleModal}
           setOpenModuleSelection={setOpenModuleSelection}
           disableAutoFocus

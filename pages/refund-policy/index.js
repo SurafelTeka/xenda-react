@@ -66,17 +66,10 @@ export const getStaticProps = async () => {
     );
 
     if (!configRes.ok) {
-      return {
-        props: {
-          configData: null,
-          landingPageData: {},
-        },
-        revalidate: 3600,
-      };
+      throw new Error(`Failed to fetch config: ${configRes.statusText}`);
     }
 
-    const text = await configRes.text();
-    const config = JSON.parse(text);
+    const config = await configRes.json();
 
     return {
       props: {
@@ -86,9 +79,7 @@ export const getStaticProps = async () => {
       revalidate: 3600, // Revalidate every hour
     };
   } catch (error) {
-    if (process.env.NODE_ENV === "development") {
-      console.error("Error fetching configuration data:", error);
-    }
+    console.error("Error fetching configuration data:", error);
 
     return {
       props: {

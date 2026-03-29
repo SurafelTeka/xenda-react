@@ -57,9 +57,7 @@ const VendorProfile = ({ vehicleDetails }) => {
             }
           },
           onError: (error) => {
-            if (error?.response?.data?.message) {
-              toast.error(error.response.data.message);
-            }
+            toast.error(error.response.data.message);
           },
         }
       );
@@ -79,9 +77,7 @@ const VendorProfile = ({ vehicleDetails }) => {
       {
         onSuccess: onSuccessHandlerForDelete,
         onError: (error) => {
-          if (error?.response?.data?.message) {
-            toast.error(error.response.data.message);
-          }
+          toast.error(error.response.data.message);
         },
       }
     );

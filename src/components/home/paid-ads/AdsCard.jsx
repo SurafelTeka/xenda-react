@@ -73,9 +73,7 @@ const AdsCard = (props) => {
           }
         },
         onError: (error) => {
-          if (error?.response?.data?.message) {
-            toast.error(error.response.data.message);
-          }
+          toast.error(error.response.data.message);
         },
       });
     } else toast.error(t(not_logged_in_message));
@@ -92,11 +90,7 @@ const AdsCard = (props) => {
     mutate(item?.store?.id, {
       onSuccess: onSuccessHandlerForDelete,
       onError: (error) => {
-        if (error?.response?.data?.message) {
-          toast.error(error.response.data.message);
-        } else if (error?.message) {
-          toast.error(error.message);
-        }
+        toast.error(error.response.data.message);
       },
     });
   };
