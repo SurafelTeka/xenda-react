@@ -105,10 +105,12 @@ const MapModal = ({
 
   useEffect(() => {
     if (places) {
-      const tempData = places?.suggestions?.map((item) => ({
-        place_id: item?.placePrediction?.placeId,
-        description: `${item?.placePrediction?.structuredFormat?.mainText?.text}, ${item?.placePrediction?.structuredFormat?.secondaryText?.text}`,
-      }));
+      const tempData = Array.isArray(places?.suggestions)
+        ? places.suggestions.map((item) => ({
+            place_id: item?.placePrediction?.placeId,
+            description: `${item?.placePrediction?.structuredFormat?.mainText?.text}, ${item?.placePrediction?.structuredFormat?.secondaryText?.text}`,
+          }))
+        : [];
       setPredictions(tempData);
     }
   }, [places]);
@@ -297,14 +299,20 @@ const MapModal = ({
                     fullWidth
                     freeSolo
                     id="combo-box-demo"
-                    getOptionLabel={(option) => option.description}
-                    options={predictions}
+                    getOptionLabel={(option) =>
+                      typeof option === "string"
+                        ? option
+                        : option?.description || ""
+                    }
+                    options={predictions || []}
                     onChange={(event, value) => {
                       if (value) {
                         if (value !== "" && typeof value === "string") {
                           setLoadingAuto(true);
-                          const value = predictions[0];
-                          handleLocationSelection(value);
+                          const firstPrediction = predictions?.[0];
+                          if (firstPrediction) {
+                            handleLocationSelection(firstPrediction);
+                          }
                         } else {
                           handleLocationSelection(value);
                         }
