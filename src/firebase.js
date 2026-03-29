@@ -8,23 +8,28 @@ import {
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: "",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "",
 };
 
-const firebaseApp = !getApps().length
-  ? initializeApp(firebaseConfig)
-  : getApp();
+const canInitializeFirebase = Boolean(firebaseConfig.apiKey);
 
-export const auth = getAuth(firebaseApp);
+const firebaseApp = canInitializeFirebase
+  ? !getApps().length
+    ? initializeApp(firebaseConfig)
+    : getApp()
+  : null;
+
+export const auth = firebaseApp ? getAuth(firebaseApp) : null;
 
 // Correctly export a promise that resolves to messaging instance (or null)
 export const getMessagingObject = async () => {
   try {
+    if (!firebaseApp) return null;
     const isSupportedBrowser = await isSupported();
     if (isSupportedBrowser) {
       return getMessaging(firebaseApp);
