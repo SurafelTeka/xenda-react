@@ -346,7 +346,7 @@ const CarBookingModal = (props) => {
           handleClose();
         },
         onError: (error) => {
-          if (error.response.data?.length > 0) {
+          if (error?.response?.data?.length > 0) {
             setIds?.(error.response.data);
             setUpdateCartObject?.(updateObject);
             setOpenTripChange?.(true);

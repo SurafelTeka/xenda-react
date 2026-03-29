@@ -398,7 +398,7 @@ const VehicleDetailsRentThisCar = ({
         });
       },
       onError: (error) => {
-        if (error.response.data?.length > 0) {
+        if (error?.response?.data?.length > 0) {
           setIds?.(error.response.data);
           setUpdateCartObject?.(updateCartObject);
           setOpenTripChange?.(true);
