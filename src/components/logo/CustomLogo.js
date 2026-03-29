@@ -22,15 +22,8 @@ const CustomLogo = ({ logoImg, atlText, height, width, objectFit }) => {
     location = localStorage.getItem("location");
   }
   const handleClick = () => {
-    if (router.pathname === "/") {
-      if (location && typeof location === 'string') {
-        router.replace("/home", undefined, { shallow: true });
-      } else {
-        router.push("/", undefined, { shallow: true });
-      }
-    } else {
-      router.replace("/home", undefined, { shallow: true }).then();
-    }
+    // Always go to landing page when logo is clicked
+    router.push("/", undefined, { shallow: true });
   };
   return (
 

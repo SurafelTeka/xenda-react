@@ -80,6 +80,25 @@ const HeroLocationForm = () => {
       isGeolocationEnabled: true,
     });
 
+  // Auto-fetch location on component mount
+  useEffect(() => {
+    if (isGeolocationAvailable && isGeolocationEnabled && !coords) {
+      getPosition();
+    }
+  }, [isGeolocationAvailable, isGeolocationEnabled, coords, getPosition]);
+
+  // Auto-set location when coords become available
+  useEffect(() => {
+    if (coords && coords.latitude && coords.longitude && !location) {
+      setLocation({ lat: coords.latitude, lng: coords.longitude });
+      setShowCurrentLocation(true);
+      setGeoLocationEnable(true);
+      setZoneIdEnabled(true);
+      setIsSelectedByGps(true);
+      setOpenLocation(false);
+    }
+  }, [coords, location]);
+
   const handleCloseLocation = () => {
     setOpenLocation(false);
     setShowCurrentLocation(false);
