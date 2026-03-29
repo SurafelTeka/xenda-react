@@ -195,14 +195,21 @@ CustomDocument.getInitialProps = async (ctx) => {
         origin: process.env.NEXT_CLIENT_HOST_URL || "http://localhost:3000",
       },
     });
-    const data = await res.json();
-    if (Array.isArray(data)) {
-      data.forEach((item) => {
-        if (item.type && item.script_id) analyticsConfig[item.type] = item.script_id;
-      });
+    const contentType = res.headers.get("content-type") || "";
+    if (res.ok && contentType.includes("application/json")) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        data.forEach((item) => {
+          if (item.type && item.script_id) {
+            analyticsConfig[item.type] = item.script_id;
+          }
+        });
+      }
     }
   } catch (err) {
-    console.error("Error fetching analytics config:", err);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error fetching analytics config:", err);
+    }
   }
 
   return {
