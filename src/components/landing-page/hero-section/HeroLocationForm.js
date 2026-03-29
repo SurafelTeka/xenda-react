@@ -407,7 +407,7 @@ const HeroLocationForm = () => {
       </CustomStackFullWidth>
       {zoneData && openModuleSelection && (
         <ModuleSelection
-          location={currentLocation}
+          location={typeof currentLocation === 'string' ? currentLocation : ''}
           closeModal={handleCloseModuleModal}
           setOpenModuleSelection={setOpenModuleSelection}
           disableAutoFocus

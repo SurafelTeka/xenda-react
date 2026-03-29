@@ -23,7 +23,7 @@ const CustomLogo = ({ logoImg, atlText, height, width, objectFit }) => {
   }
   const handleClick = () => {
     if (router.pathname === "/") {
-      if (location) {
+      if (location && typeof location === 'string') {
         router.replace("/home", undefined, { shallow: true });
       } else {
         router.push("/", undefined, { shallow: true });
