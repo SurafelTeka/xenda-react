@@ -62,7 +62,16 @@ const StoresInfoCard = (props) => {
   const id = data?.id ? data?.id : data?.slug;
   const { configData } = useSelector((state) => state.configData);
   const store_image_url = `${configData?.base_urls?.store_image_url}`;
-  const moduleId = JSON.parse(window.localStorage.getItem("module"))?.id;
+  const moduleId =
+    typeof window !== "undefined"
+      ? (() => {
+          try {
+            return JSON.parse(window.localStorage.getItem("module"))?.id;
+          } catch {
+            return undefined;
+          }
+        })()
+      : undefined;
 
   const [openModal, setOpenModal] = React.useState(false);
   const dispatch = useDispatch();
@@ -185,7 +194,7 @@ const StoresInfoCard = (props) => {
             >
               {/*getNumberWithConvertedDecimalPoint(data?.avg_rating, configData?.digit_after_decimal_point)*/}
               <Typography fontWeight="bold">
-                {data?.avg_rating.toFixed(1)}
+                {data?.avg_rating ? data.avg_rating.toFixed(1) : "0.0"}
               </Typography>
               <RatingStar fontSize="16px" color="warning.dark" />
             </Stack>

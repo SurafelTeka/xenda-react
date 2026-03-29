@@ -87,7 +87,7 @@ const CommonConditions = (props) => {
 		},handleSuccess);
 
 	useEffect(() => {
-		setConditionId(conditions?.data[0]?.id);
+		setConditionId(conditions?.data?.[0]?.id);
 	}, [conditions]);
 
 	useEffect(() => {
