@@ -52,6 +52,10 @@ const ModuleContainer = styled(Box)(({ theme, selected }) => ({
 }));
 
 export const zoneWiseModule = (data) => {
+  if (!data || !Array.isArray(data)) {
+    return [];
+  }
+  
   let currentZoneIds = undefined;
   if (typeof window !== "undefined") {
     currentZoneIds = JSON.parse(localStorage.getItem("zoneid"));
@@ -72,6 +76,10 @@ const ModuleSelect = ({
   const { interestId, existingModuleId } = useSelector(
     (state) => state.categoryIds
   );
+  
+  if (!data || !Array.isArray(data)) {
+    return <div>Loading modules...</div>;
+  }
 
   const handleModuleSelect = (item) => {
     dispatch(setFeaturedCategories([]));
@@ -90,45 +98,30 @@ const ModuleSelect = ({
 
   return (
     <Container p=".8rem" spacing={2}>
-      {data ? (
-        zoneWiseModule?.(data)?.map((item, index) => {
-          return (
-            <Tooltip
-              title={item?.module_name}
-              key={index}
-              placement="left-start"
-            >
-              <ModuleContainer
-                selected={
-                  item?.module_type === selectedModule?.module_type &&
-                  item?.id === selectedModule?.id
-                }
-                id={item?.id}
-                onClick={() => handleModuleSelect(item)}
-              >
-                <CustomImageContainer
-                  src={item?.icon_full_url}
-                  width="36px"
-                  height="36px"
-                  alt="mobile"
-                  objectFit="cover"
-                />
-              </ModuleContainer>
-            </Tooltip>
-          );
-        })
-      ) : (
-        <>
-          {[...Array(5)].map((item, index) => (
-            <Skeleton
-              key={index}
-              width="40px"
-              height="40px"
-              variant="rectangle"
+      {zoneWiseModule(data)?.map((item, index) => (
+        <Tooltip
+          title={item?.module_name}
+          key={index}
+          placement="left-start"
+        >
+          <ModuleContainer
+            selected={
+              item?.module_type === selectedModule?.module_type &&
+              item?.id === selectedModule?.id
+            }
+            id={item?.id}
+            onClick={() => handleModuleSelect(item)}
+          >
+            <CustomImageContainer
+              src={item?.icon_full_url}
+              width="36px"
+              height="36px"
+              alt="mobile"
+              objectFit="cover"
             />
-          ))}
-        </>
-      )}
+          </ModuleContainer>
+        </Tooltip>
+      ))}
     </Container>
   );
 };

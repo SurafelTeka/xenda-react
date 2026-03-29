@@ -167,6 +167,11 @@ const ModuleSelectionRaw = (props) => {
   const { modules } = useSelector((state) => state.configData);
   const [isSelected, setIsSelected] = useState(getCurrentModuleType());
   const { data, refetch } = useGetModule();
+  
+  if (!modules || modules.length === 0) {
+    return <div>Loading modules...</div>;
+  }
+  
   useEffect(() => {
     refetch();
   }, []);
