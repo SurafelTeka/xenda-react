@@ -441,7 +441,7 @@ const MapModal = ({
                       handleClose();
                     }}
                   >
-                    {errorLocation?.response?.data?.errors[0]?.message}
+                    {errorLocation?.response?.data?.errors?.[0]?.message || "Error"}
                   </Button>
                 ) : (
                   <PrimaryButton

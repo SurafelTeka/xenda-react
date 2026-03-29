@@ -87,7 +87,9 @@ const StoresInfoCard = (props) => {
           }
         },
         onError: (error) => {
-          toast.error(error.response.data.message);
+          if (error?.response?.data?.message) {
+            toast.error(error.response.data.message);
+          }
         },
       });
     } else toast.error(t(not_logged_in_message));
@@ -106,7 +108,11 @@ const StoresInfoCard = (props) => {
     mutate(id, {
       onSuccess: onSuccessHandlerForDelete,
       onError: (error) => {
-        toast.error(error.response.data.message);
+        if (error?.response?.data?.message) {
+          toast.error(error.response.data.message);
+        } else if (error?.message) {
+          toast.error(error.message);
+        }
       },
     });
   };
@@ -138,8 +144,7 @@ const StoresInfoCard = (props) => {
       <Link
         href={{
           pathname: "/store/[id]",
-          query: { id: `${id}`, module_id: `${moduleId}` },
-          store_zone_id: `${data?.zone_id}`,
+          query: { id: `${id}`, module_id: `${moduleId}`, store_zone_id: `${data?.zone_id}` },
         }}
       >
         <CardWrapper>

@@ -161,7 +161,9 @@ const Top = (props) => {
           }
         },
         onError: (error) => {
-          toast.error(error.response.data.message);
+          if (error?.response?.data?.message) {
+            toast.error(error.response.data.message);
+          }
         },
       });
     } else toast.error(t(not_logged_in_message));
@@ -182,7 +184,9 @@ const Top = (props) => {
     mutate(id, {
       onSuccess: onSuccessHandlerForDelete,
       onError: (error) => {
-        toast.error(error.response.data.message);
+        if (error?.response && error.response.data && error.response.data.message) {
+          toast.error(error.response.data.message);
+        }
       },
     });
   };
