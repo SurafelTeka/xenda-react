@@ -194,7 +194,7 @@ const RentalCheckoutPage = () => {
     mutate(tripObject, {
       onSuccess: (data) => {
         if (data) {
-          Router.push(`/rental/trip-status/${data}?from="place_order"`);
+          Router.push(`/rental/trip-status/${data || ''}?from="place_order"`);
         }
       },
       onError: onErrorResponse,

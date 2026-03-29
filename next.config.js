@@ -13,6 +13,8 @@ const nextConfig = {
       "www.xenda.online",
       "xenda.online",
       "cameroun.xenda.online",
+      "maps.googleapis.com",
+      "maps.gstatic.com",
     ],
     remotePatterns: [
       {

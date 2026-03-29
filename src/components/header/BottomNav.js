@@ -87,7 +87,7 @@ const BottomNav = () => {
                     toast.error(t("Please login"));
                   }
                 } else {
-                  router.push(`/${newValue}`);
+                  router.push(`/${newValue || ''}`);
                 }
               }
             }}
