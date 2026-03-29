@@ -44,7 +44,7 @@ const MenuBar = (props) => {
           return null;
         } else {
           return (
-            <Link href={`${item?.path}`} key={index}>
+            <Link href={item?.path || ''} key={index}>
               <Grid container md={12} xs={12}>
                 <Grid md={12} xs={12}>
                   <MenuItem selected={activeRoute(item?.path, router.pathname)}>

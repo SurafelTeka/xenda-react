@@ -34,10 +34,10 @@ const ExitingUser = ({
     >
       <CustomStackFullWidth alignItems="center">
         <Avatar
-          src={`${loginInfo?.is_exist_user?.image}/${configData?.base_urls?.customer_image_url}`}
+          src={loginInfo?.is_exist_user?.image && configData?.base_urls?.customer_image_url ? `${loginInfo.is_exist_user.image}/${configData.base_urls.customer_image_url}` : undefined}
         />
         <Typography fontSize="14px">
-          {loginInfo?.is_exist_user?.name}
+          {loginInfo?.is_exist_user?.name || ''}
         </Typography>
       </CustomStackFullWidth>
       <CustomStackFullWidth alignItems="center" spacing={1}>
