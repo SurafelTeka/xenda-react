@@ -14,7 +14,7 @@ const StorePage = ({ configData, storeDetails, distance }) => {
   const dispatch = useDispatch();
   useScrollToTop();
 
-  const metaTitle = `${storeDetails?.meta_title || storeDetails?.name} - ${configData?.business_name}`;
+  const metaTitle = `${storeDetails?.meta_title || storeDetails?.name} - ${configData?.business_name || ""}`;
   const metaImage = storeDetails?.meta_image_full_url || storeDetails?.cover_photo_full_url;
 
   const manageVisitedStores = () => {
@@ -38,12 +38,12 @@ const StorePage = ({ configData, storeDetails, distance }) => {
       manageVisitedStores();
     }
 
-    if (!configData || Object.keys(configData).length === 0) {
-      Router.replace("/404");
-    } else if (configData?.maintenance_mode) {
+    if (configData?.maintenance_mode) {
       Router.replace("/maintainance");
     } else {
-      dispatch(setConfigData(configData));
+      if (configData && Object.keys(configData).length > 0) {
+        dispatch(setConfigData(configData));
+      }
     }
   }, [configData, storeDetails]);
 
@@ -93,30 +93,41 @@ export const getServerSideProps = async (context) => {
       "X-localization": language,
     };
 
-    console.time("Fetch Config");
     const configRes = await fetch(`${baseUrl}${config_api}`, {
       method: "GET",
       headers: { ...headersCommon, lat, lng },
       signal: controller.signal,
     });
-    console.timeEnd("Fetch Config");
 
-    console.time("Fetch Store Details");
     const storeDetailsRes = await fetch(`${baseUrl}${store_details_api}/${storeId}`, {
       method: "GET",
       headers: { ...headersCommon, moduleId },
       signal: controller.signal,
     });
-    console.timeEnd("Fetch Store Details");
 
     clearTimeout(timeout);
 
-    if (!configRes.ok || !storeDetailsRes.ok) {
-      throw new Error("One or more API calls failed.");
+    if (storeDetailsRes.status === 404) {
+      return { notFound: true };
     }
 
-    const configData = await configRes.json();
+    if (!storeDetailsRes.ok) {
+      throw new Error("Store details API call failed.");
+    }
+
     const storeDetails = await storeDetailsRes.json();
+
+    let configData = {};
+    if (configRes.ok) {
+      const contentType = configRes.headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        try {
+          configData = await configRes.json();
+        } catch {
+          configData = {};
+        }
+      }
+    }
 
     return {
       props: {
@@ -128,8 +139,6 @@ export const getServerSideProps = async (context) => {
   } catch (error) {
     clearTimeout(timeout);
     console.error("SSR fetch failed:", error.message);
-    return {
-      notFound: true,
-    };
+    return { notFound: true };
   }
 };
