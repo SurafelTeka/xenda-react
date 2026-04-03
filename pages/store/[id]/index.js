@@ -83,8 +83,8 @@ export const getServerSideProps = async (context) => {
   const timeout = setTimeout(() => controller.abort(), 5000);
 
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-    const origin = process.env.NEXT_CLIENT_HOST_URL;
+    const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || "").trim();
+    const origin = (process.env.NEXT_CLIENT_HOST_URL || "").trim();
 
     const headersCommon = {
       "X-software-id": 33571750,
