@@ -16,6 +16,8 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "",
 };
 
+const vapidKey = (process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY || "").trim();
+
 const canInitializeFirebase = Boolean(firebaseConfig.apiKey);
 
 const firebaseApp = canInitializeFirebase
@@ -44,12 +46,17 @@ export const getMessagingObject = async () => {
 // fetchToken function
 export const fetchToken = async (setTokenFound, setFcmToken) => {
   try {
+    if (!vapidKey) {
+      setTokenFound(false);
+      setFcmToken();
+      return;
+    }
+
     const messaging = await getMessagingObject();
     if (!messaging) return;
 
     const currentToken = await getToken(messaging, {
-      vapidKey:
-        "",
+      vapidKey,
     });
 
     if (currentToken) {

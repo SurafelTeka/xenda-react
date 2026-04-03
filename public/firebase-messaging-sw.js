@@ -15,16 +15,25 @@ const firebaseConfig = {
   measurementId: "",
 };
 
-firebase?.initializeApp(firebaseConfig);
+try {
+  const canInitialize =
+    Boolean(firebaseConfig?.apiKey) && Boolean(firebaseConfig?.messagingSenderId);
 
-// Retrieve firebase messaging
-const messaging = firebase?.messaging();
+  if (canInitialize && typeof firebase !== "undefined") {
+    firebase.initializeApp(firebaseConfig);
 
-messaging.onBackgroundMessage(function (payload) {
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-  };
+    const messaging = firebase.messaging();
+    messaging.onBackgroundMessage(function (payload) {
+      const notificationTitle = payload?.notification?.title;
+      const notificationOptions = {
+        body: payload?.notification?.body,
+      };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
-});
+      if (notificationTitle) {
+        self.registration.showNotification(notificationTitle, notificationOptions);
+      }
+    });
+  }
+} catch (e) {
+  // Avoid breaking the app if FCM isn't configured.
+}
