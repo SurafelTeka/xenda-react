@@ -45,6 +45,7 @@ const CustomLanguage = ({
   noText,
 }) => {
   const { configData } = useSelector((state) => state.configData);
+  const allowedLanguageCodes = languageList?.map((l) => l.languageCode) || [];
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const theme = useTheme();
@@ -60,6 +61,13 @@ const CustomLanguage = ({
       let languageSetting = JSON.parse(
         localStorage.getItem("language-setting")
       );
+
+      if (!allowedLanguageCodes.includes(languageSetting)) {
+        languageSetting = "en";
+        cookie.set("languageSetting", "en");
+        localStorage.setItem("country", JSON.stringify("US"));
+      }
+
       localStorage.setItem(
         "language-setting",
         JSON.stringify(languageSetting || i18n.language)
@@ -73,6 +81,15 @@ const CustomLanguage = ({
         localStorage.getItem("language-setting")
       );
       let country = JSON.parse(localStorage.getItem("country"));
+
+      if (!allowedLanguageCodes.includes(languageSetting)) {
+        languageSetting = "en";
+        country = "US";
+        cookie.set("languageSetting", "en");
+        localStorage.setItem("language-setting", JSON.stringify("en"));
+        localStorage.setItem("country", JSON.stringify("US"));
+      }
+
       if (languageSetting) {
         dispatch(setCountryCode(country));
         dispatch(setLanguage(languageSetting));
