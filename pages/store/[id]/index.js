@@ -14,8 +14,8 @@ const StorePage = ({ configData, storeDetails, distance }) => {
   const dispatch = useDispatch();
   useScrollToTop();
 
-  const metaTitle = `${storeDetails?.meta_title || storeDetails?.name} - ${configData?.business_name || ""}`;
-  const metaImage = storeDetails?.meta_image_full_url || storeDetails?.cover_photo_full_url;
+  const metaTitle = `${storeDetails?.meta_title || storeDetails?.name} - ${configData?.business_name}`;
+  const metaImage = storeDetails?.meta_image_full_url || configData?.logo_full_url;
 
   const manageVisitedStores = () => {
     const key = "visitedStores";
@@ -38,12 +38,12 @@ const StorePage = ({ configData, storeDetails, distance }) => {
       manageVisitedStores();
     }
 
-    if (configData?.maintenance_mode) {
+    if (!configData || Object.keys(configData).length === 0) {
+      Router.replace("/404");
+    } else if (configData?.maintenance_mode) {
       Router.replace("/maintainance");
     } else {
-      if (configData && Object.keys(configData).length > 0) {
-        dispatch(setConfigData(configData));
-      }
+      dispatch(setConfigData(configData));
     }
   }, [configData, storeDetails]);
 
@@ -71,7 +71,8 @@ export default StorePage;
 export const getServerSideProps = async (context) => {
   const {
     id: storeId,
-    module_id: moduleId,
+    module,
+    module_id: legacyModuleId,
     lat,
     lng,
     distance,
@@ -83,8 +84,8 @@ export const getServerSideProps = async (context) => {
   const timeout = setTimeout(() => controller.abort(), 5000);
 
   try {
-    const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || "").trim();
-    const origin = (process.env.NEXT_CLIENT_HOST_URL || "").trim();
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const origin = process.env.NEXT_CLIENT_HOST_URL;
 
     const headersCommon = {
       "X-software-id": 33571750,
@@ -93,41 +94,32 @@ export const getServerSideProps = async (context) => {
       "X-localization": language,
     };
 
+    console.time("Fetch Config");
     const configRes = await fetch(`${baseUrl}${config_api}`, {
       method: "GET",
       headers: { ...headersCommon, lat, lng },
       signal: controller.signal,
     });
+    console.timeEnd("Fetch Config");
 
+    const moduleId = module || legacyModuleId;
+
+    console.time("Fetch Store Details");
     const storeDetailsRes = await fetch(`${baseUrl}${store_details_api}/${storeId}`, {
       method: "GET",
       headers: { ...headersCommon, moduleId },
       signal: controller.signal,
     });
+    console.timeEnd("Fetch Store Details");
 
     clearTimeout(timeout);
 
-    if (storeDetailsRes.status === 404) {
-      return { notFound: true };
+    if (!configRes.ok || !storeDetailsRes.ok) {
+      throw new Error("One or more API calls failed.");
     }
 
-    if (!storeDetailsRes.ok) {
-      throw new Error("Store details API call failed.");
-    }
-
+    const configData = await configRes.json();
     const storeDetails = await storeDetailsRes.json();
-
-    let configData = {};
-    if (configRes.ok) {
-      const contentType = configRes.headers.get("content-type") || "";
-      if (contentType.includes("application/json")) {
-        try {
-          configData = await configRes.json();
-        } catch {
-          configData = {};
-        }
-      }
-    }
 
     return {
       props: {
@@ -139,6 +131,8 @@ export const getServerSideProps = async (context) => {
   } catch (error) {
     clearTimeout(timeout);
     console.error("SSR fetch failed:", error.message);
-    return { notFound: true };
+    return {
+      notFound: true,
+    };
   }
 };
