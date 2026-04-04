@@ -24,9 +24,9 @@ const AuthHeader = ({ title, configData }) => {
     >
       <Box onClick={handleLogoClick}>
         <CustomImageContainer
-          maxWidth="300px"
-          height="50px"
-          objectfit="cover"
+          maxWidth="200px"
+          height="auto"
+          objectfit="contain"
           src={configData?.logo_full_url}
         />
       </Box>
