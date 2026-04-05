@@ -15,7 +15,24 @@ const AuthGuard = (props) => {
       }
       const token = localStorage.getItem("token");
       const guest = localStorage.getItem("guest_id");
-      if ((token || guest) && orderId) {
+      
+      // Profile pages always require authentication
+      if (from === "profile") {
+        if (token) {
+          setChecked(true);
+        } else {
+          router.push(
+            {
+              pathname: "/",
+              query: { from: from },
+            },
+            undefined,
+            { shallow: true }
+          );
+        }
+      }
+      // Other pages can use guest checkout
+      else if ((token || guest) && orderId) {
         setChecked(true);
       } else if (guest && configData?.guest_checkout_status === 1) {
         setChecked(true);

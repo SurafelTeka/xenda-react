@@ -9,10 +9,11 @@ import { getToken } from "helper-functions/getToken";
 
 const getData = async () => {
   const userToken = getToken();
-  if (userToken) {
-    const { data } = await MainApi.get(user_info_api);
-    return data;
+  if (!userToken) {
+    throw new Error("Authentication token is required");
   }
+  const { data } = await MainApi.get(user_info_api);
+  return data;
 };
 
 export default function useGetUserInfo(handleSuccess) {
@@ -22,5 +23,6 @@ export default function useGetUserInfo(handleSuccess) {
     cacheTime: 5000,
     onSuccess: handleSuccess,
     onError: onSingleErrorResponse,
+    retry: false,
   });
 }
