@@ -97,10 +97,10 @@ const PushNotificationLayout = ({
   const { mutate } = useStoreFcm();
 
   useEffect(() => {
-    if (userToken) {
+    if (userToken && fcmToken) {
       mutate(fcmToken);
     }
-  }, [fcmToken]);
+  }, [fcmToken, userToken]);
 
   const clickHandler = () => {
     if (notification.type === "message") {
