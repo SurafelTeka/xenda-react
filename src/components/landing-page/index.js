@@ -19,6 +19,7 @@ import DeliveryManAppDownload from "./delivery-download-section";
 import { GallerySection } from "./gallery-section";
 import ImageTitleSection from "./ImageTitleSection";
 import FaqTabSection from "./FaqTabSection";
+import AggregatedProductsSection from "./AggregatedProductsSection";
 
 const MapModal = dynamic(() => import("../Map/MapModal"));
 
@@ -77,6 +78,7 @@ const LandingPage = ({ configData, landingPageData }) => {
           landingPageData?.available_zone_section?.available_zone_list?.length > 0 ? (
           <AvailableZoneSection zoneSection={landingPageData?.available_zone_section} />
         ) : null}
+        <AggregatedProductsSection />
         {Number(landingPageData?.promotional_banner_section?.promotion_banner_section_status) === 1 ? (
           <Box sx={{ background: theme => theme.palette.neutral[100] }}>
             <Banners promotionalBanner={landingPageData?.promotional_banner_section?.promotion_banners_full_url} isSmall={isSmall} />
