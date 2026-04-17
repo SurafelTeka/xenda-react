@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CustomContainer from "../container";
 import ProductCard from "../cards/ProductCard";
-import { useGetAggregatedProducts } from "../../api-manage/hooks/react-query/useGetAggregatedProducts";
+import { useNewArrivalsInfiniteScroll } from "../../api-manage/hooks/react-query/product-details/useNewArrivals";
 import { removeDuplicates } from "../../utils/CustomFunctions";
 import DotSpin from "../DotSpin";
 import EmptySearchResults from "../EmptySearchResults";
@@ -17,18 +17,16 @@ const AggregatedProductsSection = () => {
   const [loading, setLoading] = useState(false);
   const { ref, inView } = useInView({ threshold: 0.1 });
 
-  // Check if module is selected
-  const [hasModule, setHasModule] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const module = localStorage.getItem("module");
-      setHasModule(!!module && module !== "null" && module !== "undefined");
-    }
-  }, []);
+  // Check if module is available
+  let hasModule = false;
+  if (typeof window !== "undefined") {
+    const module = localStorage.getItem("module");
+    hasModule = !!module && module !== "null" && module !== "undefined";
+  }
 
   const pageParams = {
     limit: 10,
+    currentTab: 0,
   };
 
   const {
@@ -37,7 +35,7 @@ const AggregatedProductsSection = () => {
     fetchNextPage,
     isLoading,
     hasNextPage,
-  } = useGetAggregatedProducts(pageParams, hasModule);
+  } = useNewArrivalsInfiniteScroll(pageParams, hasModule);
 
   // Simulate loading state for initial load
   useEffect(() => {
@@ -69,6 +67,7 @@ const AggregatedProductsSection = () => {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  // Don't render if no module is available
   if (!hasModule) {
     return null;
   }

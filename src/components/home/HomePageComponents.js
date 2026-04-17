@@ -45,6 +45,7 @@ import { GoogleApi } from "api-manage/hooks/react-query/googleApi";
 import { useUpdatePaymentMethod } from "api-manage/hooks/react-query/payment-method/useUpdatePaymentMethod";
 import { useUpdatePaymentByWallet } from "api-manage/hooks/react-query/useUpdatePaymentByWallet";
 import { onErrorResponse } from "api-manage/api-error-response/ErrorResponses";
+import AggregatedProductsSection from "../landing-page/AggregatedProductsSection";
 
 export const HomeComponentsWrapper = styled(Box)(({ theme }) => ({
   width: "100%",
@@ -266,6 +267,7 @@ const HomePageComponents = ({ configData, landingPageData }) => {
               <TaxiSearchPanel position="relative" />
             </Box>
           )}
+          <AggregatedProductsSection />
           <Box width="100%">{getModuleWiseComponents()}</Box>
         </CustomStackFullWidth>
 
