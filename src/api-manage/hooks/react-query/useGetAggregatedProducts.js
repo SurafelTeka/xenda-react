@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "react-query";
 import { latest_items_api } from "../../ApiRoutes";
-import MainApi from "../../../MainApi";
+import MainApi from "../../MainApi";
 import { onSingleErrorResponse } from "../../api-error-response/ErrorResponses";
 
 const getAggregatedProducts = async (pageParams) => {
