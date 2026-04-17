@@ -1,13 +1,66 @@
 import { useInfiniteQuery } from "react-query";
 import { latest_items_api } from "../../ApiRoutes";
-import MainApi from "../../MainApi";
+import axios from "axios";
 import { onSingleErrorResponse } from "../../api-error-response/ErrorResponses";
 
 const getAggregatedProducts = async (pageParams) => {
   const { limit, pageParam } = pageParams;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   
-  const { data } = await MainApi.get(
-    `${latest_items_api}?limit=${limit}&offset=${pageParam}`
+  let zoneid = undefined;
+  let token = undefined;
+  let language = undefined;
+  let currentLocation = undefined;
+  let software_id = 33571750;
+  let hostname = process.env.NEXT_CLIENT_HOST_URL;
+  let moduleid = undefined;
+
+  if (typeof window !== "undefined") {
+    zoneid = localStorage.getItem("zoneid");
+    token = localStorage.getItem("token");
+    language = JSON.parse(localStorage.getItem("language-setting"));
+    currentLocation = JSON.parse(localStorage.getItem("currentLatLng"));
+    moduleid = JSON.parse(localStorage.getItem("module"))?.id;
+  }
+
+  const headers = {
+    latitude: currentLocation?.lat || 0,
+    longitude: currentLocation?.lng || 0,
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "X-software-id": software_id,
+    "ngrok-skip-browser-warning": true,
+  };
+
+  const zoneidIsValid =
+    zoneid &&
+    zoneid !== "undefined" &&
+    zoneid !== "null" &&
+    !/nan/i.test(zoneid) &&
+    (() => {
+      try {
+        const parsed = JSON.parse(zoneid);
+        return (
+          Array.isArray(parsed) &&
+          parsed.length > 0 &&
+          parsed.every((id) => !Number.isNaN(Number(id)))
+        );
+      } catch {
+        return false;
+      }
+    })();
+  
+  if (zoneidIsValid) {
+    headers.zoneid = zoneid;
+  }
+  if (moduleid) headers.moduleId = moduleid;
+  if (token) headers.authorization = `Bearer ${token}`;
+  if (language) headers["X-localization"] = language;
+  if (hostname) headers.origin = hostname;
+
+  const { data } = await axios.get(
+    `${baseUrl}${latest_items_api}?limit=${limit}&offset=${pageParam}`,
+    { headers }
   );
   return data;
 };
