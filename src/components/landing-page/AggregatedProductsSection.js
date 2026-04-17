@@ -17,6 +17,16 @@ const AggregatedProductsSection = () => {
   const [loading, setLoading] = useState(false);
   const { ref, inView } = useInView({ threshold: 0.1 });
 
+  // Check if module is selected
+  const [hasModule, setHasModule] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const module = localStorage.getItem("module");
+      setHasModule(!!module && module !== "null" && module !== "undefined");
+    }
+  }, []);
+
   const pageParams = {
     limit: 10,
   };
@@ -27,7 +37,7 @@ const AggregatedProductsSection = () => {
     fetchNextPage,
     isLoading,
     hasNextPage,
-  } = useGetAggregatedProducts(pageParams);
+  } = useGetAggregatedProducts(pageParams, hasModule);
 
   // Simulate loading state for initial load
   useEffect(() => {
@@ -58,6 +68,10 @@ const AggregatedProductsSection = () => {
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  if (!hasModule) {
+    return null;
+  }
 
   if (itemData.length === 0 && !isLoading) {
     return null;

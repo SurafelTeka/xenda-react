@@ -65,7 +65,7 @@ const getAggregatedProducts = async (pageParams) => {
   return data;
 };
 
-export function useGetAggregatedProducts(pageParams) {
+export function useGetAggregatedProducts(pageParams, hasModule = true) {
   return useInfiniteQuery(
     ["aggregated-products"],
     ({ pageParam = 1 }) => getAggregatedProducts({ ...pageParams, pageParam }),
@@ -76,7 +76,7 @@ export function useGetAggregatedProducts(pageParams) {
       },
       getPreviousPageParam: (firstPage, allPages) => firstPage.prevCursor,
       retry: 3,
-      enabled: true,
+      enabled: hasModule,
       onError: onSingleErrorResponse,
       cacheTime: "0",
     }
